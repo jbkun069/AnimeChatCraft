@@ -133,4 +133,33 @@ async function loadCharacterList() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadCharacterList();
+  loadSavedTheme();
 });
+
+// Theme management functions
+function applySelectedTheme() {
+  const themeSelect = document.getElementById("theme-select");
+  const selectedTheme = themeSelect.value;
+  
+  if (selectedTheme) {
+    applyTheme(selectedTheme);
+    saveTheme(selectedTheme);
+  }
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+}
+
+function saveTheme(theme) {
+  localStorage.setItem('selectedTheme', theme);
+}
+
+function loadSavedTheme() {
+  const savedTheme = localStorage.getItem('selectedTheme') || 'light';
+  applyTheme(savedTheme);
+  
+  // Update the select dropdown to show the current theme
+  const themeSelect = document.getElementById("theme-select");
+  themeSelect.value = savedTheme;
+}
