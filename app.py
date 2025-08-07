@@ -2,6 +2,7 @@
 
 from flask import Flask, render_template, request, jsonify
 from flask_wtf import FlaskForm
+from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 import google.generativeai as genai
@@ -20,6 +21,9 @@ genai.configure(api_key=api_key)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key')
+
+# Enable CSRF protection
+csrf = CSRFProtect(app)
 
 # Directory to save character files
 CHARACTER_DIR = "characters"
@@ -41,11 +45,8 @@ def index():
 
 # Handle chat requests
 @app.route("/chat", methods=["POST"])
+@csrf.exempt
 def chat():
-    form = ChatForm()
-    if not form.validate_on_submit():
-        return jsonify({"reply": "Invalid message data."}), 400
-    
     data = request.get_json()
     user_message = data.get("message", "")
     character = data.get("character", {})
@@ -77,11 +78,8 @@ def chat():
 
 # Save character endpoint
 @app.route("/save_character", methods=["POST"])
+@csrf.exempt
 def save_character():
-    form = CharacterForm()
-    if not form.validate_on_submit():
-        return jsonify({"message": "Invalid character data."}), 400
-    
     data = request.get_json()
     name = data.get("name")
     

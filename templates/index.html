@@ -1,47 +1,47 @@
-<!-- /templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Anime Personality Chatbot</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎭 Talk to Your Anime Character</title>
   <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/script.js" defer></script>
 </head>
 <body>
   <div class="container">
     <h1>🎭 Talk to Your Anime Character</h1>
-
-    <!-- Character Personality Form -->
-    <section id="character-form">
+    
+    <section aria-label="Character Definition">
       <h2>Define Character</h2>
-      <input type="text" id="name" placeholder="Name (e.g. Kuroko Himari)">
-      <input type="text" id="age" placeholder="Age (e.g. 17)">
-      <input type="text" id="traits" placeholder="Traits (comma-separated)">
-      <input type="text" id="speech_style" placeholder="Speech Style (e.g. tsundere)">
-      <input type="text" id="anime_setting" placeholder="Setting (e.g. Battle Academy)">
-      <input type="text" id="catchphrase" placeholder="Catchphrase (e.g. H-Himari's not blushing, baka!)">
-      
-      <div id="character-select-container">
-        <select id="character-select">
-          <option value="">Select a character</option>
-        </select>
-        <button onclick="loadCharacter()" class="load-button">Load Character</button>
-      </div>
-      
-      <div id="character-actions">
-        <button onclick="saveCharacter()" class="save-button">Save Character</button>
-      </div>
+      <form id="character-form" onsubmit="event.preventDefault(); saveCharacter();">
+        <input type="text" id="name" placeholder="Character Name" aria-label="Character Name" required>
+        <input type="number" id="age" placeholder="Age" aria-label="Age" required>
+        <input type="text" id="traits" placeholder="Traits (comma-separated)" aria-label="Traits" required>
+        <input type="text" id="speech_style" placeholder="Speech Style" aria-label="Speech Style" required>
+        <input type="text" id="anime_setting" placeholder="Anime Setting" aria-label="Anime Setting" required>
+        <input type="text" id="catchphrase" placeholder="Catchphrase" aria-label="Catchphrase" required>
+        
+        <div id="character-select-container">
+          <select id="character-select" aria-label="Select a saved character">
+            <option value="">Select a character</option>
+          </select>
+          <button type="button" class="load-button" onclick="loadCharacter()">Load Character</button>
+        </div>
+        
+        <div id="character-actions">
+          <button type="submit" class="save-button">Save Character</button>
+        </div>
+      </form>
     </section>
 
-    <!-- Chat Interface -->
-    <section id="chat-section">
+    <section id="chat-section" aria-label="Chat Interface">
       <h2>Chat</h2>
-      <div id="chat-box"></div>
-      <input type="text" id="user-input" placeholder="Type your message...">
-      <button onclick="sendMessage()">Send</button>
+      <div id="chat-box" role="log" aria-live="polite"></div>
+      <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();">
+        <input type="text" id="user-input" placeholder="Type your message..." aria-label="Chat input" required>
+        <button type="submit">Send</button>
+      </form>
     </section>
   </div>
-
-  <script src="/static/script.js"></script>
 </body>
 </html>
