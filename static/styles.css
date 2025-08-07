@@ -21,13 +21,21 @@ h1, h2 {
   color: #c71585;
 }
 
-input[type="text"] {
+input[type="text"], input[type="number"] {
   width: 100%;
   padding: 0.75rem;
   margin-bottom: 1rem;
   border: 2px solid #ffc0cb;
   border-radius: 8px;
   font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
 }
 
 button {
@@ -101,7 +109,20 @@ button:hover {
 #character-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 15px;
+  align-items: start;
+}
+
+/* Make name field span full width */
+#character-form input[type="text"]:first-child,
+#character-form input[type="number"] {
+  grid-column: span 1;
+}
+
+/* Ensure consistent input styling within form */
+#character-form input[type="text"],
+#character-form input[type="number"] {
+  margin-bottom: 0;
 }
 
 #character-select-container {
@@ -117,6 +138,15 @@ button:hover {
   border: 2px solid #ffc0cb;
   border-radius: 8px;
   font-size: 1rem;
+  box-sizing: border-box;
+  background-color: white;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#character-select:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
 }
 
 #character-actions {
