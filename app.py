@@ -1,16 +1,25 @@
 # app.py
 
 from flask import Flask, render_template, request, jsonify
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
 import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 import json
+from pathlib import Path
+from google.api_core.exceptions import GoogleAPIError
 
 # Load environment variables
 load_dotenv()
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+api_key = os.getenv("GOOGLE_API_KEY")
+if not api_key:
+    raise ValueError("GOOGLE_API_KEY not set in environment variables")
+genai.configure(api_key=api_key)
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key')
 
 # Directory to save character files
 CHARACTER_DIR = "characters"
@@ -18,6 +27,12 @@ CHARACTER_DIR = "characters"
 # Create the directory if it doesn't exist
 if not os.path.exists(CHARACTER_DIR):
     os.makedirs(CHARACTER_DIR)
+
+class ChatForm(FlaskForm):
+    message = StringField('Message', validators=[DataRequired()])
+
+class CharacterForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
 
 # Serve the frontend HTML
 @app.route("/")
@@ -27,8 +42,11 @@ def index():
 # Handle chat requests
 @app.route("/chat", methods=["POST"])
 def chat():
+    form = ChatForm()
+    if not form.validate_on_submit():
+        return jsonify({"reply": "Invalid message data."}), 400
+    
     data = request.get_json()
-
     user_message = data.get("message", "")
     character = data.get("character", {})
 
@@ -50,19 +68,36 @@ def chat():
         reply = response.text.strip().removeprefix("Character:").strip()
         return jsonify({"reply": reply})
 
+    except GoogleAPIError as e:
+        print(f"Gemini API error: {e}")
+        return jsonify({"reply": "AI service unavailable. Please try again later."}), 503
     except Exception as e:
-        print(f"Gemini error: {e}")
-        return jsonify({"reply": "Error talking to the AI."}), 500
+        print(f"Unexpected error: {e}")
+        return jsonify({"reply": "An unexpected error occurred."}), 500
 
 # Save character endpoint
 @app.route("/save_character", methods=["POST"])
 def save_character():
+    form = CharacterForm()
+    if not form.validate_on_submit():
+        return jsonify({"message": "Invalid character data."}), 400
+    
     data = request.get_json()
     name = data.get("name")
-    if not name:
-        return jsonify({"message": "Character name is required"}), 400
+    
+    # Validate all required fields
+    if not all([data.get("name"), data.get("age"), data.get("traits"), data.get("speech_style"), 
+                data.get("anime_setting"), data.get("catchphrase")]):
+        return jsonify({"message": "All fields are required"}), 400
+    
+    # Validate age is a number
+    if not str(data.get("age", "")).isdigit():
+        return jsonify({"message": "Age must be a number"}), 400
 
-    filepath = os.path.join(CHARACTER_DIR, f"{name.lower()}.json")
+    # Secure filename handling
+    filename = Path(name.lower()).name + ".json"
+    filepath = os.path.join(CHARACTER_DIR, filename)
+    
     try:
         with open(filepath, "w") as f:
             json.dump(data, f, indent=2)
@@ -73,7 +108,10 @@ def save_character():
 # Load character endpoint
 @app.route("/load_character/<name>", methods=["GET"])
 def load_character(name):
-    filepath = os.path.join(CHARACTER_DIR, f"{name.lower()}.json")
+    # Secure filename handling
+    filename = Path(name.lower()).name + ".json"
+    filepath = os.path.join(CHARACTER_DIR, filename)
+    
     if not os.path.exists(filepath):
         return jsonify({"message": f"Character '{name}' not found."}), 404
 
