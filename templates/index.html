@@ -1,0 +1,47 @@
+<!-- /templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anime Personality Chatbot</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🎭 Talk to Your Anime Character</h1>
+
+    <!-- Character Personality Form -->
+    <section id="character-form">
+      <h2>Define Character</h2>
+      <input type="text" id="name" placeholder="Name (e.g. Kuroko Himari)">
+      <input type="text" id="age" placeholder="Age (e.g. 17)">
+      <input type="text" id="traits" placeholder="Traits (comma-separated)">
+      <input type="text" id="speech_style" placeholder="Speech Style (e.g. tsundere)">
+      <input type="text" id="anime_setting" placeholder="Setting (e.g. Battle Academy)">
+      <input type="text" id="catchphrase" placeholder="Catchphrase (e.g. H-Himari's not blushing, baka!)">
+      
+      <div id="character-select-container">
+        <select id="character-select">
+          <option value="">Select a character</option>
+        </select>
+        <button onclick="loadCharacter()" class="load-button">Load Character</button>
+      </div>
+      
+      <div id="character-actions">
+        <button onclick="saveCharacter()" class="save-button">Save Character</button>
+      </div>
+    </section>
+
+    <!-- Chat Interface -->
+    <section id="chat-section">
+      <h2>Chat</h2>
+      <div id="chat-box"></div>
+      <input type="text" id="user-input" placeholder="Type your message...">
+      <button onclick="sendMessage()">Send</button>
+    </section>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
