@@ -4,20 +4,21 @@ let characterProfile = {};
 
 async function saveCharacter() {
   const name = document.getElementById("name").value.trim();
-  const age = document.getElementById("age").value.trim();
+  const gender = document.getElementById("gender").value;
   const traits = document.getElementById("traits").value.trim();
   const speech_style = document.getElementById("speech_style").value.trim();
   const anime_setting = document.getElementById("anime_setting").value.trim();
   const catchphrase = document.getElementById("catchphrase").value.trim();
 
-  if (!name || !age || isNaN(age) || !traits || !speech_style || !anime_setting || !catchphrase) {
-    alert("All fields are required, and age must be a number!");
+
+  if (!name || !gender || !traits || !speech_style || !anime_setting || !catchphrase) {
+    alert("All fields are required, including gender!");
     return;
   }
 
   characterProfile = {
     name: name,
-    age: age,
+    gender: gender,
     traits: traits.split(",").map(s => s.trim()).filter(s => s),
     speech_style: speech_style,
     anime_setting: anime_setting,
@@ -97,7 +98,7 @@ async function loadCharacter() {
     characterProfile = await response.json();
     
     document.getElementById("name").value = characterProfile.name || "";
-    document.getElementById("age").value = characterProfile.age || "";
+  document.getElementById("gender").value = characterProfile.gender || "";
     document.getElementById("traits").value = (characterProfile.traits || []).join(", ");
     document.getElementById("speech_style").value = characterProfile.speech_style || "";
     document.getElementById("anime_setting").value = characterProfile.anime_setting || "";

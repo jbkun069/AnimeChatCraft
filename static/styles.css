@@ -23,7 +23,7 @@
 :root[data-theme="dark"] {
   --background: #1a1a2f;
   --container-bg: #2a1a3f;
-  --text: #e0e0e0;
+  font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   --heading: #ff69b4;
   --input-border: #7a4a8a;
   --button-bg: #ff69b4;
@@ -33,7 +33,7 @@
   --bot-msg-bg: #7a4a8a;
   --bot-msg-border: #5a2a6a;
   --load-button-bg: #8a2be2;
-  --load-button-hover: #6a1ba7;
+  font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Neon Tokyo */
@@ -47,7 +47,7 @@
   --button-hover: #cc00cc;
   --user-msg-bg: #4a6a9a;
   --user-msg-border: #2a4a7a;
-  --bot-msg-bg: #7a4a8a;
+  font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   --bot-msg-border: #5a2a6a;
   --load-button-bg: #00b7eb;
   --load-button-hover: #0099cc;
@@ -61,7 +61,7 @@
   --heading: #4a7043;
   --input-border: #8ab87a;
   --button-bg: #6b8e23;
-  --button-hover: #556b2f;
+  font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   --user-msg-bg: #d4e4d4;
   --user-msg-border: #a3c2a3;
   --bot-msg-bg: #e0e8d0;
@@ -72,7 +72,7 @@
 
 /* Sunset Beach */
 :root[data-theme="sunset"] {
-  --background: linear-gradient(180deg, #ff9966, #ff5e62);
+  font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   --container-bg: #fff5e6;
   --text: #333;
   --heading: #ff4500;
@@ -130,11 +130,15 @@ input[type="text"]:focus, input[type="number"]:focus {
   box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
 }
 
+
 select {
-  font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
   border: 2px solid var(--input-border, #ffc0cb);
   border-radius: 8px;
   font-size: 1rem;
+  font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-sizing: border-box;
   background: var(--container-bg, #fff0f6);
   color: var(--text, #333);

@@ -84,13 +84,10 @@ def save_character():
     name = data.get("name")
     
     # Validate all required fields
-    if not all([data.get("name"), data.get("age"), data.get("traits"), data.get("speech_style"), 
+
+    if not all([data.get("name"), data.get("gender"), data.get("traits"), data.get("speech_style"), 
                 data.get("anime_setting"), data.get("catchphrase")]):
         return jsonify({"message": "All fields are required"}), 400
-    
-    # Validate age is a number
-    if not str(data.get("age", "")).isdigit():
-        return jsonify({"message": "Age must be a number"}), 400
 
     # Secure filename handling
     filename = Path(name.lower()).name + ".json"
@@ -137,7 +134,7 @@ def list_characters():
 def build_prompt(character):
     traits = ", ".join(character.get("traits", []))
     return f"""
-You are {character.get('name', 'an anime character')}, a {character.get('age', '16')}-year-old anime character.
+You are {character.get('name', 'an anime character')}, a {character.get('gender', 'female')} anime character.
 Traits: {traits}
 Speech Style: {character.get('speech_style', '')}
 Catchphrase: "{character.get('catchphrase', '')}"
